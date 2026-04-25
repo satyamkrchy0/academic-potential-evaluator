@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — EmployEdge</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/cursor.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">⚡</div>
+            <div class="sidebar-brand-text">EmployEdge</div>
+        </div>
+        
+        <div class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <a href="dashboard.html" class="nav-item active" data-tooltip="Dashboard">
+                <span class="nav-item-icon">📊</span>
+                <span class="nav-item-label">Dashboard</span>
+                <span class="nav-tooltip">Dashboard</span>
+            </a>
+            <a href="history.html" class="nav-item" data-tooltip="History">
+                <span class="nav-item-icon">📋</span>
+                <span class="nav-item-label">Evaluation History</span>
+                <span class="nav-tooltip">History</span>
+            </a>
+            
+            <div class="nav-section-label">Account</div>
+            <a href="profile.html" class="nav-item" data-tooltip="Profile">
+                <span class="nav-item-icon">👤</span>
+                <span class="nav-item-label">My Profile</span>
+                <span class="nav-tooltip">Profile</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="sidebar-user" onclick="window.location.href='profile.html'">
+                <div class="sidebar-avatar" id="sidebar-avatar">U</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebar-user-name">User Name</div>
+                    <div class="sidebar-user-role">Student</div>
+                </div>
+            </div>
+            <button class="btn btn-ghost btn-full mt-3 btn-sm" onclick="logout()" style="justify-content: flex-start; padding-left: 14px;">
+                <span style="font-size: 16px;">🚪</span> Logout
+            </button>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Top Navbar -->
+    <header class="topbar">
+        <button class="topbar-hamburger" id="sidebar-toggle">☰</button>
+        <div class="topbar-title">Dashboard</div>
+        <div class="topbar-breadcrumb">/ Overview & Prediction</div>
+        <div class="topbar-spacer"></div>
+        
+        <div class="topbar-actions">
+            <!-- Connection Status -->
+            <div class="badge badge--success" id="connection-status" title="Connected to real-time server">
+                <div class="socket-indicator online"></div>
+                Live
+            </div>
+            
+            <button class="topbar-btn theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme" id="theme-icon">
+                🌙
+            </button>
+            <button class="topbar-btn" aria-label="Notifications">
+                🔔
+                <span class="notification-dot"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Ambient Background -->
+    <canvas id="dash-particles" class="dash-ambient-canvas"></canvas>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-content dashboard-grid">
+            
+            <!-- Welcome Banner -->
+            <section class="welcome-banner">
+                <div class="welcome-left">
+                    <h1 class="welcome-title">Good <span id="greeting-time">evening</span>, <span id="welcome-name">there</span> 👋</h1>
+                    <p class="welcome-sub">Here's your placement readiness overview. Run an evaluation to get AI-powered insights.</p>
+                </div>
+                <div class="welcome-right">
+                    <div class="welcome-stat">
+                        <div class="welcome-stat-ring">
+                            <svg viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(79,255,176,0.1)" stroke-width="3"/>
+                                <circle cx="18" cy="18" r="15.5" fill="none" stroke="url(#miniGrad)" stroke-width="3" stroke-dasharray="97.4" stroke-dashoffset="97.4" stroke-linecap="round" id="welcome-ring"/>
+                                <defs><linearGradient id="miniGrad"><stop offset="0%" stop-color="#4fffb0"/><stop offset="100%" stop-color="#7b61ff"/></linearGradient></defs>
+                            </svg>
+                            <span class="welcome-ring-label" id="welcome-ring-pct">0%</span>
+                        </div>
+                        <div class="welcome-stat-text">
+                            <span class="welcome-stat-value" id="welcome-stat-val">Profile Readiness</span>
+                            <span class="welcome-stat-hint">Complete an evaluation</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- KPI Cards -->
+            <section class="kpi-row">
+                <div class="kpi-card kpi-card--green anim-fade-in-up stagger-1">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">🎓</div>
+                        <div class="kpi-trend kpi-trend--up">Live</div>
+                    </div>
+                    <div class="kpi-value" id="kpi-total-evals">0</div>
+                    <div class="kpi-label">Total Evaluations</div>
+                </div>
+                
+                <div class="kpi-card kpi-card--purple anim-fade-in-up stagger-2">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">⭐</div>
+                        <div class="kpi-trend">Avg</div>
+                    </div>
+                    <div class="kpi-value" id="kpi-avg-score">0%</div>
+                    <div class="kpi-label">Average Score</div>
+                </div>
+                
+                <div class="kpi-card kpi-card--blue anim-fade-in-up stagger-3">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">💼</div>
+                        <div class="kpi-trend">Est.</div>
+                    </div>
+                    <div class="kpi-value" id="kpi-placement-rate">0%</div>
+                    <div class="kpi-label">Placement Rate</div>
+                </div>
+                
+                <div class="kpi-card kpi-card--gold anim-fade-in-up stagger-4">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">⏱️</div>
+                        <div class="kpi-trend">AI</div>
+                    </div>
+                    <div class="kpi-value" id="kpi-last-eval">—</div>
+                    <div class="kpi-label">Last Evaluation</div>
+                </div>
+            </section>
+
+            <!-- Charts & Recent Activity -->
+            <section class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div>
+                            <h3 class="chart-card-title">Placement Score Trend</h3>
+                            <p class="chart-card-subtitle">Your progress over time</p>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper" style="height: 240px;">
+                        <canvas id="trend-chart"></canvas>
+                    </div>
+                    <div id="trend-insight" class="chart-insight-container"></div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div>
+                            <h3 class="chart-card-title">Outcomes</h3>
+                            <p class="chart-card-subtitle">Placed vs Not Placed</p>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper" style="height: 240px;">
+                        <canvas id="doughnut-chart"></canvas>
+                    </div>
+                    <div id="doughnut-insight" class="chart-insight-container"></div>
+                </div>
+            </section>
+
+            <!-- Main Prediction Form & Results -->
+            <section class="evaluation-section mt-4">
+                <!-- Form -->
+                <div class="form-card" style="position: relative; overflow: hidden; z-index: 1;">
+                    <!-- Ambient Glows -->
+                    <div class="glow-bg-primary"></div>
+                    <div class="glow-bg-secondary"></div>
+                    
+                    <div class="form-card-header" style="position: relative; z-index: 2;">
+                        <h2>New Evaluation</h2>
+                        <p>Enter academic details to predict placement outcome</p>
+                    </div>
+                    
+                    <form id="prediction-form" style="position: relative; z-index: 2;">
+                        
+                        <!-- Demographics -->
+                        <fieldset class="form-fieldset">
+                            <legend class="form-fieldset-title">Demographics</legend>
+                            <div class="field-row mb-3">
+                                <div class="field-group mb-0">
+                                    <label for="gender">Gender</label>
+                                    <select id="gender" required>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Academics -->
+                        <fieldset class="form-fieldset">
+                            <legend class="form-fieldset-title">Academics</legend>
+                            
+                            <div class="field-row mb-3">
+                                <div class="field-group mb-0">
+                                    <label for="degree">Degree</label>
+                                    <select id="degree" required>
+                                        <option value="B.Tech">B.Tech</option>
+                                        <option value="B.Sc">B.Sc</option>
+                                        <option value="BCA">BCA</option>
+                                        <option value="MCA">MCA</option>
+                                    </select>
+                                </div>
+                                <div class="field-group mb-0">
+                                    <label for="branch">Branch</label>
+                                    <select id="branch" required>
+                                        <option value="CSE">CSE</option>
+                                        <option value="IT">IT</option>
+                                        <option value="ECE">ECE</option>
+                                        <option value="ME">ME</option>
+                                        <option value="Civil">Civil</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="cgpa">CGPA (4.0 - 10.0)</label>
+                                <div class="slider-input-group">
+                                    <input type="range" id="cgpa-slider" min="4.0" max="10.0" step="0.1" value="7.5" oninput="document.getElementById('cgpa').value = this.value">
+                                    <input type="number" id="cgpa" min="4.0" max="10.0" step="0.1" value="7.5" oninput="document.getElementById('cgpa-slider').value = this.value" required>
+                                </div>
+                            </div>
+
+                            <div class="field-group">
+                                <label>Active Backlogs</label>
+                                <div class="pill-select" id="backlogs-group">
+                                    <button type="button" class="pill active" data-val="0">None</button>
+                                    <button type="button" class="pill" data-val="1">1</button>
+                                    <button type="button" class="pill" data-val="2">2</button>
+                                    <button type="button" class="pill" data-val="3">3+</button>
+                                </div>
+                                <input type="hidden" id="backlogs" value="0">
+                            </div>
+                        </fieldset>
+
+                        <!-- Experience -->
+                        <fieldset class="form-fieldset">
+                            <legend class="form-fieldset-title">Experience & Projects</legend>
+                            
+                            <div class="field-group">
+                                <label>Internships Completed</label>
+                                <div class="pill-select" id="internships-group">
+                                    <button type="button" class="pill active" data-val="0">0</button>
+                                    <button type="button" class="pill" data-val="1">1</button>
+                                    <button type="button" class="pill" data-val="2">2</button>
+                                    <button type="button" class="pill" data-val="3">3+</button>
+                                </div>
+                                <input type="hidden" id="internships" value="0">
+                            </div>
+
+                            <div class="field-group">
+                                <label>Projects Built</label>
+                                <div class="pill-select" id="projects-group">
+                                    <button type="button" class="pill active" data-val="1">1</button>
+                                    <button type="button" class="pill" data-val="2">2</button>
+                                    <button type="button" class="pill" data-val="3">3</button>
+                                    <button type="button" class="pill" data-val="4">4+</button>
+                                </div>
+                                <input type="hidden" id="projects" value="1">
+                            </div>
+                            
+                            <div class="field-group">
+                                <label>Professional Certifications</label>
+                                <div class="pill-select" id="certifications-group">
+                                    <button type="button" class="pill active" data-val="0">0</button>
+                                    <button type="button" class="pill" data-val="1">1</button>
+                                    <button type="button" class="pill" data-val="2">2</button>
+                                    <button type="button" class="pill" data-val="3">3+</button>
+                                </div>
+                                <input type="hidden" id="certifications" value="0">
+                            </div>
+                        </fieldset>
+
+                        <!-- Skills -->
+                        <fieldset class="form-fieldset">
+                            <legend class="form-fieldset-title">Skills Assessment</legend>
+                            
+                            <div class="field-group">
+                                <label for="coding_skills">Coding Skills (1-10)</label>
+                                <div class="star-row" id="coding_skills-group" data-target="coding_skills">
+                                    <button type="button" class="star" data-val="1">★</button>
+                                    <button type="button" class="star" data-val="2">★</button>
+                                    <button type="button" class="star" data-val="3">★</button>
+                                    <button type="button" class="star" data-val="4">★</button>
+                                    <button type="button" class="star active" data-val="5">★</button>
+                                    <button type="button" class="star" data-val="6">★</button>
+                                    <button type="button" class="star" data-val="7">★</button>
+                                    <button type="button" class="star" data-val="8">★</button>
+                                    <button type="button" class="star" data-val="9">★</button>
+                                    <button type="button" class="star" data-val="10">★</button>
+                                </div>
+                                <input type="hidden" id="coding_skills" value="5">
+                            </div>
+
+                            <div class="field-group">
+                                <label for="communication_skills">Communication Skills (1-10)</label>
+                                <div class="star-row" id="communication_skills-group" data-target="communication_skills">
+                                    <button type="button" class="star" data-val="1">★</button>
+                                    <button type="button" class="star" data-val="2">★</button>
+                                    <button type="button" class="star" data-val="3">★</button>
+                                    <button type="button" class="star" data-val="4">★</button>
+                                    <button type="button" class="star active" data-val="5">★</button>
+                                    <button type="button" class="star" data-val="6">★</button>
+                                    <button type="button" class="star" data-val="7">★</button>
+                                    <button type="button" class="star" data-val="8">★</button>
+                                    <button type="button" class="star" data-val="9">★</button>
+                                    <button type="button" class="star" data-val="10">★</button>
+                                </div>
+                                <input type="hidden" id="communication_skills" value="5">
+                            </div>
+
+                            <div class="field-group">
+                                <label for="soft_skills_rating">Soft Skills (1-10)</label>
+                                <div class="star-row" id="soft_skills_rating-group" data-target="soft_skills_rating">
+                                    <button type="button" class="star" data-val="1">★</button>
+                                    <button type="button" class="star" data-val="2">★</button>
+                                    <button type="button" class="star" data-val="3">★</button>
+                                    <button type="button" class="star" data-val="4">★</button>
+                                    <button type="button" class="star active" data-val="5">★</button>
+                                    <button type="button" class="star" data-val="6">★</button>
+                                    <button type="button" class="star" data-val="7">★</button>
+                                    <button type="button" class="star" data-val="8">★</button>
+                                    <button type="button" class="star" data-val="9">★</button>
+                                    <button type="button" class="star" data-val="10">★</button>
+                                </div>
+                                <input type="hidden" id="soft_skills_rating" value="5">
+                            </div>
+
+                            <div class="field-group mb-0">
+                                <label for="aptitude_test_score">Aptitude Test Score (0-100)</label>
+                                <div class="slider-input-group">
+                                    <input type="range" id="aptitude-slider" min="0" max="100" step="1" value="65" oninput="document.getElementById('aptitude_test_score').value = this.value">
+                                    <input type="number" id="aptitude_test_score" min="0" max="100" step="1" value="65" oninput="document.getElementById('aptitude-slider').value = this.value" required>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <button type="submit" class="btn btn-gradient btn-full btn-lg mt-4" id="btn-predict">
+                            <span>Analyze Profile</span>
+                            <div class="spinner spinner--sm hidden" id="predict-spinner"></div>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Results Panel (Hero) -->
+                <div class="results-card glass-card-elevated" id="results-panel">
+                    <div class="results-placeholder">
+                        <div class="placeholder-icon-wrap">
+                            <div class="placeholder-icon-ring"></div>
+                            <div class="placeholder-icon">🤖</div>
+                        </div>
+                        <h3>AI Engine Ready</h3>
+                        <p>Submit your profile to receive your placement probability, confidence score, and personalized AI career advice.</p>
+                        <div class="dataset-badge">⚡ Trained on 45,000 students</div>
+                        <div class="placeholder-features">
+                            <span>🎯 Probability Score</span>
+                            <span>📊 Risk Analysis</span>
+                            <span>🧠 AI Career Plan</span>
+                        </div>
+                    </div>
+                    
+                    <div id="results-content" class="hidden">
+                        <!-- SVG Circular Progress Ring -->
+                        <div class="circular-progress" id="circular-progress">
+                            <svg viewBox="0 0 100 100">
+                                <defs>
+                                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="var(--accent-primary)" />
+                                        <stop offset="100%" stop-color="var(--accent-secondary)" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-bg" cx="50" cy="50" r="42" />
+                                <circle class="progress-fill" cx="50" cy="50" r="42"
+                                    stroke-dasharray="264"
+                                    stroke-dashoffset="264"
+                                    id="progress-ring" />
+                            </svg>
+                            <div class="progress-score">
+                                <span class="score-number" id="res-score">0</span>
+                                <span class="score-label">Placement Score</span>
+                            </div>
+                        </div>
+
+                        <!-- Verdict Banner -->
+                        <div class="verdict-banner verdict-banner--placed" id="verdict-banner">
+                            <span class="verdict-icon" id="res-verdict-icon">✅</span>
+                            <span id="res-verdict">Placed</span>
+                        </div>
+
+                        <!-- Confidence Meter -->
+                        <div class="confidence-meter" id="confidence-section">
+                            <div class="confidence-meter-label">
+                                <span>Model Confidence</span>
+                                <span class="conf-value" id="res-confidence">High</span>
+                            </div>
+                            <div class="confidence-meter-track">
+                                <div class="confidence-meter-fill high" id="confidence-fill" style="--bar-width: 85%; width: 85%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Score Cards -->
+                        <div class="score-cards">
+                            <div class="score-card">
+                                <div class="card-icon">🎯</div>
+                                <div class="card-value" id="res-prob">0%</div>
+                                <div class="card-label">Probability</div>
+                            </div>
+                            <div class="score-card">
+                                <div class="card-icon">📊</div>
+                                <div class="card-value" id="res-badge">—</div>
+                                <div class="card-label">Verdict</div>
+                            </div>
+                            <div class="score-card">
+                                <div class="card-icon">⚡</div>
+                                <div class="card-value" id="res-conf-text">—</div>
+                                <div class="card-label">Confidence</div>
+                            </div>
+                        </div>
+
+                        <!-- Risk Factors -->
+                        <div id="risk-factors-container" class="hidden">
+                            <div class="risk-card">
+                                <h3>⚠️ Areas to Improve</h3>
+                                <ul class="risk-list" id="risk-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- AI Insight Card -->
+                        <div id="ai-advice-container" class="hidden">
+                            <div class="insight-card">
+                                <div class="insight-card-header">
+                                    <div class="insight-icon">🧠</div>
+                                    <h4>AI Career Advisor</h4>
+                                </div>
+                                <div class="insight-card-body" id="ai-advice">Loading insights...</div>
+                            </div>
+                        </div>
+
+                        <div class="result-actions mt-4">
+                            <button class="btn btn-secondary btn-full" onclick="downloadReport()">
+                                <span>📄 Download PDF Report</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="js/toast.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/pdf-export.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/predict.js"></script>
+    <script src="js/socket.js"></script>
+    <script src="js/cursor.js"></script>
+    <script src="js/dashboard-fx.js"></script>
+    <script src="js/particles.js"></script>
+    <script>
+        // Greeting time
+        (function(){
+            const h = new Date().getHours();
+            const g = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+            const el = document.getElementById('greeting-time');
+            if(el) el.textContent = g;
+            // Set name from sidebar
+            const nameEl = document.getElementById('sidebar-user-name');
+            const welcomeEl = document.getElementById('welcome-name');
+            if(nameEl && welcomeEl) {
+                const obs = new MutationObserver(() => {
+                    const n = nameEl.textContent.trim().split(' ')[0];
+                    if(n && n !== 'User') welcomeEl.textContent = n;
+                });
+                obs.observe(nameEl, {childList: true, characterData: true, subtree: true});
+            }
+            // Ambient particles
+            const canvas = document.getElementById('dash-particles');
+            if(canvas && typeof ParticleField !== 'undefined') {
+                new ParticleField('dash-particles', {
+                    count: 30, maxDistance: 90, speed: 0.15,
+                    mouseRadius: 0, glowIntensity: 0.3,
+                    colors: ['#4fffb0', '#7b61ff', '#61b3ff']
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

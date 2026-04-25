@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EmployEdge — AI-powered placement prediction trained on 45,000 real student records.">
+    <title>EmployEdge — Login</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+        /* ── Auth Page Premium Enhancements ── */
+        .auth-page {
+            background:
+                radial-gradient(900px 520px at 12% -5%, rgba(123, 97, 255, 0.15), transparent 60%),
+                radial-gradient(720px 480px at 90% 10%, rgba(79, 255, 176, 0.12), transparent 55%),
+                linear-gradient(180deg, #060810 0%, #0b0f18 100%);
+        }
+
+        /* Particle canvas behind everything */
+        .auth-particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Animated gradient border on form panel */
+        .auth-form-panel {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .auth-form-panel::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(79,255,176,0.3), rgba(123,97,255,0.3), rgba(255,107,170,0.2), rgba(79,255,176,0.3));
+            background-size: 300% 300%;
+            animation: gradientBorder 6s ease-in-out infinite;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Enhanced hero section with glassmorphism */
+        .auth-hero {
+            position: relative;
+            background: linear-gradient(135deg, rgba(16, 20, 34, 0.9), rgba(18, 15, 34, 0.85));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Animated floating elements */
+        .auth-float-1, .auth-float-2 {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.08;
+            filter: blur(60px);
+            pointer-events: none;
+            animation: authFloat 8s ease-in-out infinite;
+        }
+        .auth-float-1 {
+            width: 200px; height: 200px;
+            background: var(--accent-primary);
+            top: 10%; right: 10%;
+        }
+        .auth-float-2 {
+            width: 160px; height: 160px;
+            background: var(--accent-secondary);
+            bottom: 15%; left: 5%;
+            animation-delay: -4s;
+        }
+        @keyframes authFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(15px, -20px) scale(1.1); }
+            66% { transform: translate(-10px, 15px) scale(0.95); }
+        }
+
+        /* Social proof ticker */
+        .auth-social-proof {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: rgba(79, 255, 176, 0.06);
+            border: 1px solid rgba(79, 255, 176, 0.12);
+            border-radius: var(--radius-full);
+            margin-top: var(--space-6);
+            width: fit-content;
+        }
+        .proof-dot {
+            width: 8px; height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: proofPulse 2s ease-in-out infinite;
+        }
+        @keyframes proofPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(79,255,176,0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(79,255,176,0); }
+        }
+        .proof-text {
+            font-size: var(--text-xs);
+            color: var(--text-secondary);
+        }
+        .proof-text strong { color: var(--accent-primary); }
+
+        /* Enhanced metric cards with hover */
+        .metric-card {
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .metric-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(79,255,176,0.2);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 20px rgba(79,255,176,0.05);
+        }
+
+        /* Enhanced feature cards */
+        .hero-feature {
+            transition: all 0.3s ease;
+        }
+        .hero-feature:hover {
+            transform: translateX(4px);
+            border-color: rgba(79,255,176,0.15);
+            background: rgba(255,255,255,0.04);
+        }
+
+        /* Input focus glow enhancement */
+        .auth-form input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(79,255,176,0.1), 0 0 20px rgba(79,255,176,0.05);
+        }
+
+        /* Tab hover ripple */
+        .tab {
+            position: relative;
+            overflow: hidden;
+        }
+        .tab::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .tab:hover::after { opacity: 1; }
+
+        /* Entry animations */
+        .auth-hero { animation: slideInLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .auth-panel { animation: slideInRight 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
+        .auth-topbar { animation: fadeInDown 0.6s ease 0.05s both; }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Security badge styling */
+        .security-badges {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            margin-top: var(--space-4);
+            padding-top: var(--space-4);
+            border-top: 1px solid var(--border-default);
+        }
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .security-badge-icon {
+            width: 18px; height: 18px;
+            border-radius: 4px;
+            background: rgba(79,255,176,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <!-- Particle Background -->
+    <canvas id="auth-particles" class="auth-particles"></canvas>
+
+    <div class="auth-ambient" aria-hidden="true">
+        <span class="orb orb--one"></span>
+        <span class="orb orb--two"></span>
+        <span class="orb orb--three"></span>
+    </div>
+
+    <div class="auth-shell">
+        <header class="auth-topbar">
+            <div class="auth-brand-inline">
+                <div class="brand-logo">⚡</div>
+                <div class="brand-wordmark">
+                    <span class="brand-title">EmployEdge</span>
+                    <span class="brand-tagline">Placement intelligence platform</span>
+                </div>
+            </div>
+            <div class="auth-topbar-meta">
+                <span class="meta-pill">🔒 256-bit encrypted</span>
+                <span class="meta-pill">⚡ Real-time insights</span>
+            </div>
+        </header>
+
+        <div class="auth-grid">
+            <section class="auth-hero">
+                <div class="auth-float-1"></div>
+                <div class="auth-float-2"></div>
+
+                <div class="hero-badge">✨ AI-powered placement forecasting</div>
+                <h1 class="hero-title">Turn academic data into confident placement decisions.</h1>
+                <p class="hero-sub">EmployEdge combines performance, skill readiness, and industry alignment to forecast outcomes and suggest next-best actions in seconds.</p>
+
+                <div class="auth-social-proof">
+                    <div class="proof-dot"></div>
+                    <span class="proof-text"><strong>147 students</strong> evaluated this week</span>
+                </div>
+
+                <div class="hero-metrics">
+                    <div class="metric-card">
+                        <div class="metric-value">95.2%</div>
+                        <div class="metric-label">Prediction accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">45k+</div>
+                        <div class="metric-label">Student records</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">&lt;2s</div>
+                        <div class="metric-label">Insight delivery</div>
+                    </div>
+                </div>
+
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <div class="feature-icon">⚡</div>
+                        <div>
+                            <div class="feature-title">Instant evaluations</div>
+                            <div class="feature-text">12 weighted dimensions with live confidence scoring.</div>
+                        </div>
+                    </div>
+                    <div class="hero-feature">
+                        <div class="feature-icon">🎯</div>
+                        <div>
+                            <div class="feature-title">Actionable insights</div>
+                            <div class="feature-text">Personalized focus areas for fast improvement.</div>
+                        </div>
+                    </div>
+                    <div class="hero-feature">
+                        <div class="feature-icon">🔒</div>
+                        <div>
+                            <div class="feature-title">Secure collaboration</div>
+                            <div class="feature-text">JWT auth with role-based access control.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-quote">
+                    <p>"EmployEdge helped our placement cell spotlight high-potential candidates early and track readiness in real time."</p>
+                    <div class="quote-meta">— Career Services Lead, Top University</div>
+                </div>
+            </section>
+
+            <section class="auth-panel">
+                <div class="auth-form-panel glass-card-elevated">
+                    <div class="panel-header">
+                        <div class="panel-kicker">Welcome to EmployEdge</div>
+                        <div class="panel-title">Access your placement intelligence hub.</div>
+                    </div>
+
+                    <div class="auth-tabs">
+                        <button class="tab active" id="tab-login" onclick="showTab('login')">Sign In</button>
+                        <button class="tab" id="tab-register" onclick="showTab('register')">Create Account</button>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="login-form" class="auth-form anim-fade-in-up">
+                        <h2>Welcome back</h2>
+                        
+                        <div class="field-group">
+                            <label for="login-email">University Email</label>
+                            <input type="email" id="login-email" placeholder="student@university.edu" required autocomplete="email">
+                        </div>
+                        
+                        <div class="field-group">
+                            <label for="login-password">Password</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                                <button type="button" class="password-toggle" onclick="togglePassword('login-password', this)" aria-label="Toggle password visibility">👁️</button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-gradient btn-full btn-lg mt-4">
+                            <span>Sign In to Dashboard</span>
+                            <div class="spinner spinner--sm hidden" id="login-spinner"></div>
+                        </button>
+                        
+                        <div id="login-error" class="form-alert hidden"></div>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="register-form" class="auth-form hidden">
+                        <h2>Create account</h2>
+                        
+                        <div class="field-group">
+                            <label for="reg-name">Full Name</label>
+                            <input type="text" id="reg-name" placeholder="John Doe" required autocomplete="name">
+                        </div>
+                        
+                        <div class="field-group">
+                            <label for="reg-email">University Email</label>
+                            <input type="email" id="reg-email" placeholder="student@university.edu" required autocomplete="email">
+                        </div>
+                        
+                        <div class="field-group">
+                            <label for="reg-password">Password <span class="label-hint">(min 6 chars)</span></label>
+                            <div class="password-wrapper">
+                                <input type="password" id="reg-password" placeholder="Create a strong password" required autocomplete="new-password" oninput="checkPasswordStrength(this.value)">
+                                <button type="button" class="password-toggle" onclick="togglePassword('reg-password', this)" aria-label="Toggle password visibility">👁️</button>
+                            </div>
+                            <div class="password-strength">
+                                <div class="strength-bar" id="strength-1"></div>
+                                <div class="strength-bar" id="strength-2"></div>
+                                <div class="strength-bar" id="strength-3"></div>
+                            </div>
+                            <div class="strength-text" id="strength-text">Password strength</div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-gradient btn-full btn-lg mt-4">
+                            <span>Create Account</span>
+                            <div class="spinner spinner--sm hidden" id="reg-spinner"></div>
+                        </button>
+                        
+                        <div id="register-error" class="form-alert hidden"></div>
+                    </form>
+
+                    <div class="panel-footer">
+                        <span class="footer-pill">🔒 Instant scoring</span>
+                        <span class="footer-pill">🎓 University-ready</span>
+                        <span class="footer-pill">📊 Actionable insights</span>
+                    </div>
+
+                    <div class="security-badges">
+                        <div class="security-badge">
+                            <div class="security-badge-icon">🔐</div>
+                            <span>JWT Auth</span>
+                        </div>
+                        <div class="security-badge">
+                            <div class="security-badge-icon">🛡️</div>
+                            <span>Data Protected</span>
+                        </div>
+                        <div class="security-badge">
+                            <div class="security-badge-icon">⚡</div>
+                            <span>Fast & Reliable</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/toast.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/particles.js"></script>
+    <script>
+        // Initialize auth page particles
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('auth-particles');
+            if (canvas) {
+                new ParticleField('auth-particles', {
+                    count: 50,
+                    maxDistance: 100,
+                    speed: 0.2,
+                    mouseRadius: 120,
+                    glowIntensity: 0.4,
+                    colors: ['#4fffb0', '#7b61ff', '#61b3ff']
+                });
+            }
+        });
+    </script>
+</body>
+</html>

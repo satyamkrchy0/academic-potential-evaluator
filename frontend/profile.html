@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile — EmployEdge</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/cursor.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">⚡</div>
+            <div class="sidebar-brand-text">EmployEdge</div>
+        </div>
+        
+        <div class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <a href="dashboard.html" class="nav-item" data-tooltip="Dashboard">
+                <span class="nav-item-icon">📊</span>
+                <span class="nav-item-label">Dashboard</span>
+                <span class="nav-tooltip">Dashboard</span>
+            </a>
+            <a href="history.html" class="nav-item" data-tooltip="History">
+                <span class="nav-item-icon">📋</span>
+                <span class="nav-item-label">Evaluation History</span>
+                <span class="nav-tooltip">History</span>
+            </a>
+            
+            <div class="nav-section-label">Account</div>
+            <a href="profile.html" class="nav-item active" data-tooltip="Profile">
+                <span class="nav-item-icon">👤</span>
+                <span class="nav-item-label">My Profile</span>
+                <span class="nav-tooltip">Profile</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="sidebar-user" onclick="window.location.href='profile.html'">
+                <div class="sidebar-avatar" id="sidebar-avatar">U</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebar-user-name">User Name</div>
+                    <div class="sidebar-user-role">Student</div>
+                </div>
+            </div>
+            <button class="btn btn-ghost btn-full mt-3 btn-sm" onclick="logout()" style="justify-content: flex-start; padding-left: 14px;">
+                <span style="font-size: 16px;">🚪</span> Logout
+            </button>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Top Navbar -->
+    <header class="topbar">
+        <button class="topbar-hamburger" id="sidebar-toggle">☰</button>
+        <div class="topbar-title">My Profile</div>
+        <div class="topbar-breadcrumb">/ Account Settings</div>
+        <div class="topbar-spacer"></div>
+        
+        <div class="topbar-actions">
+            <button class="topbar-btn theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme" id="theme-icon">
+                🌙
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-content">
+            
+            <div class="history-header">
+                <div>
+                    <h1>Account Settings</h1>
+                    <p class="text-muted text-sm mt-1">Manage your profile, preferences, and view performance analytics</p>
+                </div>
+            </div>
+
+            <!-- Performance Summary Section -->
+            <div class="perf-cards mt-4 anim-fade-in-up">
+                <div class="perf-card">
+                    <div class="perf-card-icon">📊</div>
+                    <div class="perf-card-value" id="perf-total">0</div>
+                    <div class="perf-card-label">Total Evaluations</div>
+                </div>
+                <div class="perf-card">
+                    <div class="perf-card-icon">⭐</div>
+                    <div class="perf-card-value" id="perf-avg">0%</div>
+                    <div class="perf-card-label">Average Score</div>
+                    <div class="perf-card-trend" id="perf-avg-trend"></div>
+                </div>
+                <div class="perf-card">
+                    <div class="perf-card-icon">🏆</div>
+                    <div class="perf-card-value" id="perf-best">0</div>
+                    <div class="perf-card-label">Best Score</div>
+                </div>
+            </div>
+
+            <!-- Readiness Score + Skill Breakdown -->
+            <div class="readiness-section anim-fade-in-up stagger-2" id="readiness-section" style="display:none;">
+                <div class="readiness-header">
+                    <h3>🎯 Placement Readiness</h3>
+                    <div class="badge badge--info" id="readiness-badge">Calculating...</div>
+                </div>
+                <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-8); align-items: start;">
+                    <div style="text-align: center;">
+                        <div class="readiness-ring" id="readiness-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="ring-bg" cx="50" cy="50" r="42" />
+                                <circle class="ring-fill" cx="50" cy="50" r="42"
+                                    stroke-dasharray="264"
+                                    stroke-dashoffset="264"
+                                    id="readiness-fill" />
+                            </svg>
+                            <div class="ring-label" id="readiness-score">—</div>
+                        </div>
+                        <div class="badge-row" id="achievement-badges"></div>
+                    </div>
+                    <div id="skill-bars-container">
+                        <!-- Skill bars rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strengths vs Weaknesses -->
+            <div class="sw-section anim-fade-in-up stagger-3" id="sw-section" style="display:none;">
+                <div class="sw-card">
+                    <h4>💪 Strengths</h4>
+                    <div id="strengths-container"></div>
+                </div>
+                <div class="sw-card">
+                    <h4>🔧 Areas to Improve</h4>
+                    <div id="weaknesses-container"></div>
+                </div>
+            </div>
+
+            <div class="profile-grid mt-4">
+                
+                <!-- Profile Sidebar Card -->
+                <div class="profile-sidebar-card">
+                    <div class="profile-avatar-large" id="profile-avatar-large">U</div>
+                    <div class="profile-name" id="profile-display-name">User Name</div>
+                    <div class="profile-email" id="profile-display-email">user@university.edu</div>
+                    <div class="badge badge--purple mb-4">Student Account</div>
+                    
+                    <div class="profile-stats">
+                        <div>
+                            <div class="profile-stat-value" id="stat-evals">0</div>
+                            <div class="profile-stat-label">Evaluations</div>
+                        </div>
+                        <div>
+                            <div class="profile-stat-value" id="stat-avg">0%</div>
+                            <div class="profile-stat-label">Avg Score</div>
+                        </div>
+                        <div>
+                            <div class="profile-stat-value" id="stat-placed">0</div>
+                            <div class="profile-stat-label">Placed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Form Card -->
+                <div class="profile-settings-card">
+                    
+                    <!-- Profile Info -->
+                    <div class="settings-section">
+                        <h3>Personal Information</h3>
+                        <form id="profile-form">
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label for="profile-name">Full Name</label>
+                                    <input type="text" id="profile-name" required>
+                                </div>
+                                <div class="field-group">
+                                    <label for="profile-email">Email Address <span class="label-hint">(read-only)</span></label>
+                                    <input type="email" id="profile-email" disabled>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="btn-save-profile">
+                                <span>Save Changes</span>
+                                <div class="spinner spinner--sm hidden" id="profile-spinner"></div>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Security -->
+                    <div class="settings-section">
+                        <h3>Security</h3>
+                        <form id="password-form">
+                            <div class="field-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" required>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" id="new-password" required>
+                                </div>
+                                <div class="field-group">
+                                    <label for="confirm-password">Confirm New Password</label>
+                                    <input type="password" id="confirm-password" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-secondary" id="btn-change-password">
+                                <span>Change Password</span>
+                                <div class="spinner spinner--sm hidden" id="password-spinner"></div>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Preferences -->
+                    <div class="settings-section">
+                        <h3>Preferences</h3>
+                        <div class="d-flex align-items-center justify-content-between p-3 border border-default rounded" style="border-radius: var(--radius-md);">
+                            <div>
+                                <h4 style="font-size: var(--text-sm); font-weight: 600; margin-bottom: 2px;">Dark Mode</h4>
+                                <p style="font-size: var(--text-xs); color: var(--text-muted);">Toggle dark/light theme for the dashboard</p>
+                            </div>
+                            <button class="btn btn-ghost btn-sm" onclick="toggleTheme()">Toggle Theme</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/toast.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/cursor.js"></script>
+</body>
+</html>

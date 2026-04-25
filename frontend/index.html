@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EmployEdge — AI-powered placement prediction trained on 45,000 real student records.">
+    <title>EmployEdge — Placement Intelligence</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="css/cursor.css">
+</head>
+<body class="landing-page">
+
+    <!-- Navigation -->
+    <nav class="landing-nav" id="landing-nav">
+        <div class="auth-brand-inline" style="gap: 12px; display: flex; align-items: center;">
+            <div class="brand-logo" style="width: 40px; height: 40px; font-size: 20px;">⚡</div>
+            <div class="brand-title" style="margin: 0; font-size: var(--text-lg);">EmployEdge</div>
+        </div>
+        
+        <div class="nav-links" id="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#technology">Technology</a>
+            <a href="#contact">Contact</a>
+        </div>
+        
+        <div class="nav-actions">
+            <a href="auth.html" class="btn btn-ghost btn-sm">Login</a>
+            <a href="auth.html" class="btn btn-primary btn-sm btn-magnetic">Sign Up</a>
+            <button class="mobile-hamburger" id="mobile-menu-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <!-- Particle Canvas -->
+        <canvas id="hero-particles" class="hero-canvas"></canvas>
+        
+        <div class="hero-ambient">
+            <div class="orb orb-1" data-parallax="-0.08"></div>
+            <div class="orb orb-2" data-parallax="0.06"></div>
+            <div class="orb orb-3"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-badge mb-4 scroll-reveal" style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:99px; background:rgba(79, 255, 176, 0.12); color:var(--accent-primary); font-size:var(--text-xs); font-weight:600; border:1px solid rgba(79,255,176,0.2); text-transform:uppercase; letter-spacing:0.04em;">
+                ✨ Next-Gen Placement Analytics
+            </div>
+            <h1 class="scroll-reveal">Turn academic data into <br><span class="hero-gradient-text">confident decisions.</span></h1>
+            <p class="scroll-reveal">EmployEdge combines academic performance, skill readiness, and industry alignment to forecast placement outcomes and generate highly-detailed AI improvement plans in seconds.</p>
+            
+            <div class="hero-cta scroll-reveal">
+                <a href="auth.html" class="btn btn-gradient btn-lg btn-magnetic btn-glow">
+                    <span>Start Free Evaluation</span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 4px;">
+                        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="#technology" class="btn btn-secondary btn-lg">Explore the AI</a>
+            </div>
+
+            <!-- Floating Trust Badge -->
+            <div class="hero-trust scroll-reveal">
+                <div class="trust-avatars">
+                    <div class="trust-avatar" style="background: linear-gradient(135deg, #4fffb0, #61b3ff);">S</div>
+                    <div class="trust-avatar" style="background: linear-gradient(135deg, #7b61ff, #ff6baa);">A</div>
+                    <div class="trust-avatar" style="background: linear-gradient(135deg, #ffd166, #ff6baa);">R</div>
+                    <div class="trust-avatar" style="background: linear-gradient(135deg, #61b3ff, #4fffb0);">M</div>
+                </div>
+                <span class="trust-text">Trusted by <strong>2,500+</strong> students across 30 universities</span>
+            </div>
+        </div>
+
+        <!-- Animated scroll indicator -->
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- Stats Counter Section -->
+    <section class="stats-section">
+        <div class="stats-grid scroll-reveal" data-stagger>
+            <div class="stat-item stagger-child">
+                <div class="stat-value" data-count="45000" data-suffix="+">0+</div>
+                <div class="stat-label">Training Records</div>
+                <div class="stat-desc">Real student placement data</div>
+            </div>
+            <div class="stat-item stagger-child">
+                <div class="stat-value" data-count="95.2" data-suffix="%">0%</div>
+                <div class="stat-label">Accuracy Rate</div>
+                <div class="stat-desc">MLP Neural Network precision</div>
+            </div>
+            <div class="stat-item stagger-child">
+                <div class="stat-value" data-count="12" data-suffix="">0</div>
+                <div class="stat-label">Evaluation Metrics</div>
+                <div class="stat-desc">Comprehensive analysis</div>
+            </div>
+            <div class="stat-item stagger-child">
+                <div class="stat-value" data-prefix="<" data-count="2" data-suffix="s">0s</div>
+                <div class="stat-label">Response Time</div>
+                <div class="stat-desc">Real-time predictions</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="landing-section">
+        <h2 class="section-title scroll-reveal">Bridging Academia & Industry</h2>
+        <p class="section-subtitle scroll-reveal">We empower students to identify their weak points before interview season begins, using real data from thousands of successful tech placements.</p>
+        
+        <div class="about-grid">
+            <div id="aurora-bg" class="about-visual scroll-reveal" style="position:relative; height:400px; background:var(--bg-elevated); border-radius:var(--radius-2xl); border:1px solid var(--border-default); overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+                <!-- Animated Mock Dashboard Graphic -->
+                <div class="mock-ui" style="width: 80%; height: 70%; background: var(--bg-primary); border-radius: 12px; border: 1px solid var(--border-default); display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 1;">
+                    <!-- Top bar -->
+                    <div style="height: 30px; border-bottom: 1px solid var(--border-default); display: flex; align-items: center; padding: 0 12px; gap: 6px;">
+                        <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <!-- Body -->
+                    <div style="flex: 1; padding: 16px; display: flex; gap: 16px;">
+                        <!-- Sidebar -->
+                        <div style="width: 25%; background: rgba(255,255,255,0.02); border-radius: 6px;"></div>
+                        <!-- Main -->
+                        <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+                            <!-- Animated progress bars -->
+                            <div style="height: 12px; width: 60%; background: var(--accent-primary); border-radius: 6px; animation: pulseWidth 2s infinite ease-in-out alternate;"></div>
+                            <div style="height: 12px; width: 85%; background: var(--accent-purple, #7b61ff); border-radius: 6px; animation: pulseWidth 2.5s infinite ease-in-out alternate-reverse;"></div>
+                            <div style="height: 12px; width: 40%; background: var(--text-muted); border-radius: 6px;"></div>
+                            
+                            <div style="margin-top: auto; display: flex; gap: 12px; height: 50px;">
+                                <div style="flex: 1; background: rgba(79, 255, 176, 0.1); border-radius: 6px; border: 1px solid rgba(79, 255, 176, 0.2); animation: floatUp 3s infinite ease-in-out;"></div>
+                                <div style="flex: 1; background: rgba(123, 97, 255, 0.1); border-radius: 6px; border: 1px solid rgba(123, 97, 255, 0.2); animation: floatUp 3s infinite ease-in-out 1s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Glow effect over mock UI -->
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 60%); background-size: 200% 200%; animation: shimmer 4s infinite linear;"></div>
+                </div>
+                
+                <style>
+                    @keyframes pulseWidth { 0% { width: 50%; } 100% { width: 90%; } }
+                    @keyframes floatUp { 0% { transform: translateY(0); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0); } }
+                </style>
+            </div>
+            <div class="about-text scroll-reveal">
+                <h3>Stop guessing, start preparing.</h3>
+                <p>Traditional placement preparation relies on broad, generic advice. EmployEdge changes this by providing tailored, metric-driven feedback.</p>
+                <p>By comparing your exact CGPA, project count, aptitude score, and coding proficiency against a deep neural network, you receive an immediate reality check—and the exact steps needed to reach the top tier.</p>
+                
+                <ul class="feature-checklist">
+                    <li class="scroll-reveal"><span class="check-icon">✓</span> 12 unique evaluation metrics</li>
+                    <li class="scroll-reveal"><span class="check-icon">✓</span> Real-time probability scoring</li>
+                    <li class="scroll-reveal"><span class="check-icon">✓</span> Step-by-step action plans</li>
+                    <li class="scroll-reveal"><span class="check-icon">✓</span> AI-powered career advisory</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="landing-section how-it-works-section">
+        <h2 class="section-title scroll-reveal">How It Works</h2>
+        <p class="section-subtitle scroll-reveal">Three simple steps to your personalized placement prediction</p>
+
+        <div class="steps-grid scroll-reveal" data-stagger>
+            <div class="step-card stagger-child">
+                <div class="step-number">01</div>
+                <div class="step-icon">📝</div>
+                <h4>Input Your Profile</h4>
+                <p>Enter your academic details, skills, and experience into our intuitive dashboard.</p>
+                <div class="step-connector"></div>
+            </div>
+            <div class="step-card stagger-child">
+                <div class="step-number">02</div>
+                <div class="step-icon">🧠</div>
+                <h4>AI Analysis</h4>
+                <p>Our neural network processes your data through 45,000 training records in real-time.</p>
+                <div class="step-connector"></div>
+            </div>
+            <div class="step-card stagger-child">
+                <div class="step-number">03</div>
+                <div class="step-icon">📊</div>
+                <h4>Get Your Report</h4>
+                <p>Receive a detailed prediction, confidence score, and personalized AI career advice.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="technology" class="landing-section" style="border-top: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default);">
+        <h2 class="section-title scroll-reveal">Powered by Deep Learning</h2>
+        <p class="section-subtitle scroll-reveal">Our Multi-Layer Perceptron (MLP) Neural Network was trained on over 45,000 real student placement records to ensure high-fidelity forecasting.</p>
+        
+        <div class="tech-grid scroll-reveal" data-stagger>
+            <div class="tech-card stagger-child">
+                <div class="tech-card-icon">🧠</div>
+                <h4>MLP Neural Network</h4>
+                <p>Utilizes a Python-based Flask API running advanced scikit-learn models, perfectly calibrated for high-confidence predictions.</p>
+                <div class="tech-card-glow"></div>
+            </div>
+            <div class="tech-card stagger-child">
+                <div class="tech-card-icon">⚡</div>
+                <h4>Real-time Processing</h4>
+                <p>Features an event-driven Node.js & Express architecture that processes evaluations and generates insights in under a second.</p>
+                <div class="tech-card-glow"></div>
+            </div>
+            <div class="tech-card stagger-child">
+                <div class="tech-card-icon">🔐</div>
+                <h4>Secure & Scalable</h4>
+                <p>Built with enterprise-grade security, JWT authentication, and a robust PostgreSQL/Prisma database schema.</p>
+                <div class="tech-card-glow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="landing-section testimonial-section">
+        <h2 class="section-title scroll-reveal">What Students Say</h2>
+        <p class="section-subtitle scroll-reveal">Hear from students who transformed their placement journey with EmployEdge</p>
+
+        <div class="testimonial-grid scroll-reveal" data-stagger>
+            <div class="testimonial-card stagger-child">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"EmployEdge identified my weak spots in communication and aptitude. After working on those areas for 2 months, I cracked my dream company placement!"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar" style="background: linear-gradient(135deg, #4fffb0, #7b61ff);">P</div>
+                    <div>
+                        <div class="testimonial-name">Priya Sharma</div>
+                        <div class="testimonial-role">B.Tech CSE • Placed at TCS</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card stagger-child">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"The AI career advisor gave me actionable feedback that generic career sites never could. My placement score jumped from 58 to 87 in three months."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar" style="background: linear-gradient(135deg, #61b3ff, #ff6baa);">R</div>
+                    <div>
+                        <div class="testimonial-name">Rahul Verma</div>
+                        <div class="testimonial-role">B.Tech IT • Placed at Infosys</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card stagger-child">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"I was skeptical at first, but the detailed PDF reports and risk factor analysis helped me understand exactly where I stood. Truly a game changer."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar" style="background: linear-gradient(135deg, #ffd166, #ff6baa);">A</div>
+                    <div>
+                        <div class="testimonial-name">Ananya Patel</div>
+                        <div class="testimonial-role">MCA • Placed at Wipro</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-section scroll-reveal">
+        <div class="cta-content">
+            <div class="cta-ambient">
+                <div class="cta-orb cta-orb-1"></div>
+                <div class="cta-orb cta-orb-2"></div>
+            </div>
+            <h2>Ready to predict your placement?</h2>
+            <p>Join thousands of students who've already taken control of their career outcomes with AI-powered analytics.</p>
+            <a href="auth.html" class="btn btn-gradient btn-lg btn-magnetic btn-glow">
+                Get Started Free
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 4px;">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="landing-section">
+        <h2 class="section-title scroll-reveal">Get in Touch</h2>
+        <p class="section-subtitle scroll-reveal">Interested in deploying EmployEdge at your university or institution? Contact our team for enterprise solutions.</p>
+        
+        <div class="contact-container scroll-reveal">
+            <form id="contact-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent = '✓ Sent!'; this.querySelector('button').disabled = true; setTimeout(() => { this.reset(); this.querySelector('button').textContent = 'Send Message'; this.querySelector('button').disabled = false; }, 3000);">
+                <div class="field-group">
+                    <label for="contact-name">Name</label>
+                    <input type="text" id="contact-name" placeholder="John Doe" required>
+                </div>
+                <div class="field-group">
+                    <label for="contact-email">Email</label>
+                    <input type="email" id="contact-email" placeholder="john@university.edu" required>
+                </div>
+                <div class="field-group">
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" rows="4" placeholder="How can we help you?" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full mt-2">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand-title">EmployEdge</div>
+                <p>The definitive AI placement intelligence platform for modern universities and ambitious students.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#technology">Technology</a></li>
+                    <li><a href="auth.html">Login</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>&copy; 2026 EmployEdge. All rights reserved.</div>
+            <div class="social-links">
+                <a href="#" aria-label="Twitter">𝕏</a>
+                <a href="#" aria-label="LinkedIn">in</a>
+                <a href="#" aria-label="GitHub">gh</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/aurora.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/scroll-animations.js"></script>
+    <script src="js/cursor.js"></script>
+    <script>
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrolled / height) * 100;
+            document.getElementById('scroll-progress').style.width = progress + '%';
+        }, { passive: true });
+    </script>
+</body>
+</html>

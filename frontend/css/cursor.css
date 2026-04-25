@@ -1,0 +1,109 @@
+/* ==========================================================================
+   Interactive Custom Cursor (Framer Motion / Spring Physics Translation)
+   ========================================================================== */
+
+#interactive-cursor {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+#interactive-cursor.visible {
+    opacity: 1;
+}
+
+/* Hide default cursor on desktop when our cursor is visible */
+@media (hover: hover) and (pointer: fine) {
+    body {
+        cursor: none;
+    }
+    a, button, input, select, textarea,
+    .interactive-element, .kpi-card, .pill, .star {
+        cursor: none !important;
+    }
+}
+
+.cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--accent-primary, #4fffb0);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+}
+
+.cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(79, 255, 176, 0.3);
+    background-color: rgba(79, 255, 176, 0.05);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+    z-index: 9998;
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                height 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.3s, 
+                border-color 0.3s;
+}
+
+.cursor-ambient {
+    position: fixed;
+    top: 0; left: 0;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background-color: rgba(79, 255, 176, 0.15);
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+#interactive-cursor.hovering .cursor-dot {
+    width: 0px;
+    height: 0px;
+    opacity: 0;
+}
+
+#interactive-cursor.hovering .cursor-ring {
+    width: 72px;
+    height: 72px;
+    background-color: rgba(79, 255, 176, 0.2);
+    border-color: rgba(79, 255, 176, 0.8);
+}
+
+/* Background glows for the form section based on React snippet */
+.glow-bg-primary {
+    position: absolute;
+    bottom: 0; left: 0;
+    margin-left: -5rem;
+    margin-bottom: -5rem;
+    height: 16rem;
+    width: 16rem;
+    border-radius: 50%;
+    background-color: rgba(79, 255, 176, 0.1);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glow-bg-secondary {
+    position: absolute;
+    top: 0; right: 0;
+    margin-right: -5rem;
+    margin-top: -5rem;
+    height: 16rem;
+    width: 16rem;
+    border-radius: 50%;
+    background-color: rgba(123, 97, 255, 0.1);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+}
