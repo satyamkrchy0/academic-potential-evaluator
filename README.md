@@ -562,7 +562,7 @@ Get user's prediction history (requires JWT)
 
 ## 👥 Contributors
 
-[Your Name] - [Your University]  
+[Satyam Kumar] - [Lovely Professional University] 
 Academic Project for Advanced Web Development & Frontend Web Development
 
 ---
