@@ -147,7 +147,13 @@
                 
                 <!-- Profile Sidebar Card -->
                 <div class="profile-sidebar-card">
-                    <div class="profile-avatar-large" id="profile-avatar-large">U</div>
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-large" id="profile-avatar-large">U</div>
+                        <div class="profile-avatar-overlay" id="avatar-upload-trigger" title="Change profile picture">
+                            <span>📷</span>
+                        </div>
+                        <input type="file" id="avatar-file-input" accept="image/*" hidden>
+                    </div>
                     <div class="profile-name" id="profile-display-name">User Name</div>
                     <div class="profile-email" id="profile-display-email">user@university.edu</div>
                     <div class="badge badge--purple mb-4">Student Account</div>

@@ -191,15 +191,16 @@
                     <div class="glow-bg-secondary"></div>
                     
                     <div class="form-card-header" style="position: relative; z-index: 2;">
-                        <h2>New Evaluation</h2>
-                        <p>Enter academic details to predict placement outcome</p>
+                        <h2>✨ New Evaluation</h2>
+                        <p>Fill in your academic profile to get AI-powered placement insights</p>
                     </div>
                     
                     <form id="prediction-form" style="position: relative; z-index: 2;">
                         
-                        <!-- Demographics -->
-                        <fieldset class="form-fieldset">
-                            <legend class="form-fieldset-title">Demographics</legend>
+                        <!-- Step 1: Demographics & Academics -->
+                        <fieldset class="form-fieldset" data-step="1">
+                            <legend class="form-fieldset-title"><span class="fieldset-icon">🎓</span> Demographics & Academics</legend>
+                            
                             <div class="field-row mb-3">
                                 <div class="field-group mb-0">
                                     <label for="gender">Gender</label>
@@ -208,14 +209,6 @@
                                         <option value="Female">Female</option>
                                     </select>
                                 </div>
-                            </div>
-                        </fieldset>
-
-                        <!-- Academics -->
-                        <fieldset class="form-fieldset">
-                            <legend class="form-fieldset-title">Academics</legend>
-                            
-                            <div class="field-row mb-3">
                                 <div class="field-group mb-0">
                                     <label for="degree">Degree</label>
                                     <select id="degree" required>
@@ -225,6 +218,9 @@
                                         <option value="MCA">MCA</option>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="field-row mb-3">
                                 <div class="field-group mb-0">
                                     <label for="branch">Branch</label>
                                     <select id="branch" required>
@@ -235,13 +231,12 @@
                                         <option value="Civil">Civil</option>
                                     </select>
                                 </div>
-                            </div>
-
-                            <div class="field-group">
-                                <label for="cgpa">CGPA (4.0 - 10.0)</label>
-                                <div class="slider-input-group">
-                                    <input type="range" id="cgpa-slider" min="4.0" max="10.0" step="0.1" value="7.5" oninput="document.getElementById('cgpa').value = this.value">
-                                    <input type="number" id="cgpa" min="4.0" max="10.0" step="0.1" value="7.5" oninput="document.getElementById('cgpa-slider').value = this.value" required>
+                                <div class="field-group mb-0">
+                                    <label for="cgpa">CGPA</label>
+                                    <div class="slider-input-group">
+                                        <input type="range" id="cgpa-slider" min="4.0" max="10.0" step="0.1" value="7.5" oninput="document.getElementById('cgpa').value = this.value">
+                                        <input type="number" id="cgpa" min="4.0" max="10.0" step="0.1" value="7.5" oninput="document.getElementById('cgpa-slider').value = this.value" required>
+                                    </div>
                                 </div>
                             </div>
 
@@ -257,101 +252,118 @@
                             </div>
                         </fieldset>
 
-                        <!-- Experience -->
-                        <fieldset class="form-fieldset">
-                            <legend class="form-fieldset-title">Experience & Projects</legend>
+                        <!-- Step 2: Experience & Projects -->
+                        <fieldset class="form-fieldset" data-step="2">
+                            <legend class="form-fieldset-title"><span class="fieldset-icon">💼</span> Experience & Projects</legend>
                             
-                            <div class="field-group">
-                                <label>Internships Completed</label>
-                                <div class="pill-select" id="internships-group">
-                                    <button type="button" class="pill active" data-val="0">0</button>
-                                    <button type="button" class="pill" data-val="1">1</button>
-                                    <button type="button" class="pill" data-val="2">2</button>
-                                    <button type="button" class="pill" data-val="3">3+</button>
+                            <div class="pill-grid">
+                                <div class="field-group">
+                                    <label>Internships</label>
+                                    <div class="pill-select" id="internships-group">
+                                        <button type="button" class="pill active" data-val="0">0</button>
+                                        <button type="button" class="pill" data-val="1">1</button>
+                                        <button type="button" class="pill" data-val="2">2</button>
+                                        <button type="button" class="pill" data-val="3">3+</button>
+                                    </div>
+                                    <input type="hidden" id="internships" value="0">
                                 </div>
-                                <input type="hidden" id="internships" value="0">
-                            </div>
 
-                            <div class="field-group">
-                                <label>Projects Built</label>
-                                <div class="pill-select" id="projects-group">
-                                    <button type="button" class="pill active" data-val="1">1</button>
-                                    <button type="button" class="pill" data-val="2">2</button>
-                                    <button type="button" class="pill" data-val="3">3</button>
-                                    <button type="button" class="pill" data-val="4">4+</button>
+                                <div class="field-group">
+                                    <label>Projects Built</label>
+                                    <div class="pill-select" id="projects-group">
+                                        <button type="button" class="pill active" data-val="1">1</button>
+                                        <button type="button" class="pill" data-val="2">2</button>
+                                        <button type="button" class="pill" data-val="3">3</button>
+                                        <button type="button" class="pill" data-val="4">4+</button>
+                                    </div>
+                                    <input type="hidden" id="projects" value="1">
                                 </div>
-                                <input type="hidden" id="projects" value="1">
-                            </div>
-                            
-                            <div class="field-group">
-                                <label>Professional Certifications</label>
-                                <div class="pill-select" id="certifications-group">
-                                    <button type="button" class="pill active" data-val="0">0</button>
-                                    <button type="button" class="pill" data-val="1">1</button>
-                                    <button type="button" class="pill" data-val="2">2</button>
-                                    <button type="button" class="pill" data-val="3">3+</button>
+
+                                <div class="field-group">
+                                    <label>Certifications</label>
+                                    <div class="pill-select" id="certifications-group">
+                                        <button type="button" class="pill active" data-val="0">0</button>
+                                        <button type="button" class="pill" data-val="1">1</button>
+                                        <button type="button" class="pill" data-val="2">2</button>
+                                        <button type="button" class="pill" data-val="3">3+</button>
+                                    </div>
+                                    <input type="hidden" id="certifications" value="0">
                                 </div>
-                                <input type="hidden" id="certifications" value="0">
                             </div>
                         </fieldset>
 
-                        <!-- Skills -->
-                        <fieldset class="form-fieldset">
-                            <legend class="form-fieldset-title">Skills Assessment</legend>
+                        <!-- Step 3: Skills Assessment -->
+                        <fieldset class="form-fieldset" data-step="3">
+                            <legend class="form-fieldset-title"><span class="fieldset-icon">⚡</span> Skills Assessment</legend>
                             
-                            <div class="field-group">
-                                <label for="coding_skills">Coding Skills (1-10)</label>
-                                <div class="star-row" id="coding_skills-group" data-target="coding_skills">
-                                    <button type="button" class="star" data-val="1">★</button>
-                                    <button type="button" class="star" data-val="2">★</button>
-                                    <button type="button" class="star" data-val="3">★</button>
-                                    <button type="button" class="star" data-val="4">★</button>
-                                    <button type="button" class="star active" data-val="5">★</button>
-                                    <button type="button" class="star" data-val="6">★</button>
-                                    <button type="button" class="star" data-val="7">★</button>
-                                    <button type="button" class="star" data-val="8">★</button>
-                                    <button type="button" class="star" data-val="9">★</button>
-                                    <button type="button" class="star" data-val="10">★</button>
+                            <div class="skill-rating-group">
+                                <div class="skill-rating-item">
+                                    <div class="skill-rating-header">
+                                        <label for="coding_skills">💻 Coding Skills</label>
+                                        <span class="skill-score-badge" id="coding_skills-score">5/10</span>
+                                    </div>
+                                    <div class="star-row" id="coding_skills-group" data-target="coding_skills">
+                                        <button type="button" class="star" data-val="1">★</button>
+                                        <button type="button" class="star" data-val="2">★</button>
+                                        <button type="button" class="star" data-val="3">★</button>
+                                        <button type="button" class="star" data-val="4">★</button>
+                                        <button type="button" class="star active" data-val="5">★</button>
+                                        <button type="button" class="star" data-val="6">★</button>
+                                        <button type="button" class="star" data-val="7">★</button>
+                                        <button type="button" class="star" data-val="8">★</button>
+                                        <button type="button" class="star" data-val="9">★</button>
+                                        <button type="button" class="star" data-val="10">★</button>
+                                    </div>
+                                    <input type="hidden" id="coding_skills" value="5">
                                 </div>
-                                <input type="hidden" id="coding_skills" value="5">
-                            </div>
 
-                            <div class="field-group">
-                                <label for="communication_skills">Communication Skills (1-10)</label>
-                                <div class="star-row" id="communication_skills-group" data-target="communication_skills">
-                                    <button type="button" class="star" data-val="1">★</button>
-                                    <button type="button" class="star" data-val="2">★</button>
-                                    <button type="button" class="star" data-val="3">★</button>
-                                    <button type="button" class="star" data-val="4">★</button>
-                                    <button type="button" class="star active" data-val="5">★</button>
-                                    <button type="button" class="star" data-val="6">★</button>
-                                    <button type="button" class="star" data-val="7">★</button>
-                                    <button type="button" class="star" data-val="8">★</button>
-                                    <button type="button" class="star" data-val="9">★</button>
-                                    <button type="button" class="star" data-val="10">★</button>
+                                <div class="skill-rating-item">
+                                    <div class="skill-rating-header">
+                                        <label for="communication_skills">🗣️ Communication</label>
+                                        <span class="skill-score-badge" id="communication_skills-score">5/10</span>
+                                    </div>
+                                    <div class="star-row" id="communication_skills-group" data-target="communication_skills">
+                                        <button type="button" class="star" data-val="1">★</button>
+                                        <button type="button" class="star" data-val="2">★</button>
+                                        <button type="button" class="star" data-val="3">★</button>
+                                        <button type="button" class="star" data-val="4">★</button>
+                                        <button type="button" class="star active" data-val="5">★</button>
+                                        <button type="button" class="star" data-val="6">★</button>
+                                        <button type="button" class="star" data-val="7">★</button>
+                                        <button type="button" class="star" data-val="8">★</button>
+                                        <button type="button" class="star" data-val="9">★</button>
+                                        <button type="button" class="star" data-val="10">★</button>
+                                    </div>
+                                    <input type="hidden" id="communication_skills" value="5">
                                 </div>
-                                <input type="hidden" id="communication_skills" value="5">
-                            </div>
 
-                            <div class="field-group">
-                                <label for="soft_skills_rating">Soft Skills (1-10)</label>
-                                <div class="star-row" id="soft_skills_rating-group" data-target="soft_skills_rating">
-                                    <button type="button" class="star" data-val="1">★</button>
-                                    <button type="button" class="star" data-val="2">★</button>
-                                    <button type="button" class="star" data-val="3">★</button>
-                                    <button type="button" class="star" data-val="4">★</button>
-                                    <button type="button" class="star active" data-val="5">★</button>
-                                    <button type="button" class="star" data-val="6">★</button>
-                                    <button type="button" class="star" data-val="7">★</button>
-                                    <button type="button" class="star" data-val="8">★</button>
-                                    <button type="button" class="star" data-val="9">★</button>
-                                    <button type="button" class="star" data-val="10">★</button>
+                                <div class="skill-rating-item">
+                                    <div class="skill-rating-header">
+                                        <label for="soft_skills_rating">🤝 Soft Skills</label>
+                                        <span class="skill-score-badge" id="soft_skills_rating-score">5/10</span>
+                                    </div>
+                                    <div class="star-row" id="soft_skills_rating-group" data-target="soft_skills_rating">
+                                        <button type="button" class="star" data-val="1">★</button>
+                                        <button type="button" class="star" data-val="2">★</button>
+                                        <button type="button" class="star" data-val="3">★</button>
+                                        <button type="button" class="star" data-val="4">★</button>
+                                        <button type="button" class="star active" data-val="5">★</button>
+                                        <button type="button" class="star" data-val="6">★</button>
+                                        <button type="button" class="star" data-val="7">★</button>
+                                        <button type="button" class="star" data-val="8">★</button>
+                                        <button type="button" class="star" data-val="9">★</button>
+                                        <button type="button" class="star" data-val="10">★</button>
+                                    </div>
+                                    <input type="hidden" id="soft_skills_rating" value="5">
                                 </div>
-                                <input type="hidden" id="soft_skills_rating" value="5">
                             </div>
+                        </fieldset>
 
+                        <!-- Step 4: Aptitude -->
+                        <fieldset class="form-fieldset" data-step="4">
+                            <legend class="form-fieldset-title"><span class="fieldset-icon">📊</span> Aptitude Score</legend>
                             <div class="field-group mb-0">
-                                <label for="aptitude_test_score">Aptitude Test Score (0-100)</label>
+                                <label for="aptitude_test_score">Test Score (0-100)</label>
                                 <div class="slider-input-group">
                                     <input type="range" id="aptitude-slider" min="0" max="100" step="1" value="65" oninput="document.getElementById('aptitude_test_score').value = this.value">
                                     <input type="number" id="aptitude_test_score" min="0" max="100" step="1" value="65" oninput="document.getElementById('aptitude-slider').value = this.value" required>
@@ -360,7 +372,7 @@
                         </fieldset>
 
                         <button type="submit" class="btn btn-gradient btn-full btn-lg mt-4" id="btn-predict">
-                            <span>Analyze Profile</span>
+                            <span>🚀 Analyze Profile</span>
                             <div class="spinner spinner--sm hidden" id="predict-spinner"></div>
                         </button>
                     </form>
@@ -481,31 +493,49 @@
     <script src="js/sidebar.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/pdf-export.js"></script>
-    <script src="js/api.js"></script>
+    <script src="js/api.js?v=2"></script>
     <script src="js/auth.js"></script>
-    <script src="js/predict.js"></script>
+    <script src="js/predict.js?v=2"></script>
     <script src="js/socket.js"></script>
     <script src="js/cursor.js"></script>
     <script src="js/dashboard-fx.js"></script>
     <script src="js/particles.js"></script>
     <script>
-        // Greeting time
+        // Greeting time + User Name
         (function(){
+            // ── Greeting ──
             const h = new Date().getHours();
             const g = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
             const el = document.getElementById('greeting-time');
             if(el) el.textContent = g;
-            // Set name from sidebar
-            const nameEl = document.getElementById('sidebar-user-name');
-            const welcomeEl = document.getElementById('welcome-name');
-            if(nameEl && welcomeEl) {
-                const obs = new MutationObserver(() => {
-                    const n = nameEl.textContent.trim().split(' ')[0];
-                    if(n && n !== 'User') welcomeEl.textContent = n;
-                });
-                obs.observe(nameEl, {childList: true, characterData: true, subtree: true});
+
+            // ── User Name from localStorage ──
+            try {
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    const firstName = (user.name || '').split(' ')[0];
+                    if (firstName) {
+                        const welcomeEl = document.getElementById('welcome-name');
+                        if (welcomeEl) welcomeEl.textContent = firstName;
+                        const sidebarName = document.getElementById('sidebar-user-name');
+                        if (sidebarName) sidebarName.textContent = user.name;
+                        const sidebarAvatar = document.getElementById('sidebar-avatar');
+                        if (sidebarAvatar) sidebarAvatar.textContent = firstName.charAt(0).toUpperCase();
+                    }
+                }
+            } catch(e) { console.warn('Could not load user info:', e); }
+
+            // ── Load profile picture into sidebar ──
+            const savedPic = localStorage.getItem('profilePicture');
+            if (savedPic) {
+                const sideAvatar = document.getElementById('sidebar-avatar');
+                if (sideAvatar) {
+                    sideAvatar.innerHTML = `<img src="${savedPic}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+                }
             }
-            // Ambient particles
+
+            // ── Ambient particles ──
             const canvas = document.getElementById('dash-particles');
             if(canvas && typeof ParticleField !== 'undefined') {
                 new ParticleField('dash-particles', {

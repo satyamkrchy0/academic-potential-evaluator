@@ -381,6 +381,7 @@ input.input-success {
     font-size: var(--text-sm);
     color: var(--text-inverse);
     flex-shrink: 0;
+    overflow: hidden;
 }
 
 .sidebar-user-info {

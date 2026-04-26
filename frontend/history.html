@@ -181,6 +181,24 @@
         let historyData = [];
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // Load user info + profile picture into sidebar
+            try {
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    const firstName = (user.name || '').split(' ')[0];
+                    const sidebarName = document.getElementById('sidebar-user-name');
+                    if (sidebarName) sidebarName.textContent = user.name;
+                    const sidebarAvatar = document.getElementById('sidebar-avatar');
+                    if (sidebarAvatar) sidebarAvatar.textContent = firstName.charAt(0).toUpperCase();
+                }
+            } catch(e) {}
+            const savedPic = localStorage.getItem('profilePicture');
+            if (savedPic) {
+                const sa = document.getElementById('sidebar-avatar');
+                if (sa) sa.innerHTML = `<img src="${savedPic}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+            }
+
             await loadHistory();
             initSearch();
             initFilter();

@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.star-row').forEach(group => {
         const stars = group.querySelectorAll('.star');
         const hiddenInput = document.getElementById(group.dataset.target);
+        const scoreBadge = document.getElementById(group.dataset.target + '-score');
         
         stars.forEach(star => {
             star.addEventListener('click', () => {
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
                 if (hiddenInput) hiddenInput.value = val;
+                if (scoreBadge) scoreBadge.textContent = val + '/10';
             });
         });
     });
@@ -374,12 +376,17 @@ async function loadDashboardData() {
         // Animate KPI Cards with count-up
         animateCountUp(document.getElementById('kpi-total-evals'), history.length, '', 600);
         
+        // ── Update Profile Readiness Ring ──
+        updateProfileReadinessRing(history);
+        
         if (history.length > 0) {
             const placed = history.filter(h => h.result?.prediction === 'Placed').length;
             const placeRate = parseFloat((placed / history.length * 100).toFixed(0));
             
             const totalScore = history.reduce((sum, h) => {
-                const s = h.result?.placement_score || (h.result?.placement_probability * 100) || 0;
+                const r = h.result;
+                if (!r) return sum;
+                const s = (r.placement_score != null) ? r.placement_score : ((r.placement_probability != null) ? r.placement_probability * 100 : 0);
                 return sum + parseFloat(s);
             }, 0);
             const avgScore = parseFloat((totalScore / history.length).toFixed(1));
@@ -387,8 +394,8 @@ async function loadDashboardData() {
             animateCountUp(document.getElementById('kpi-avg-score'), avgScore, '%', 800);
             animateCountUp(document.getElementById('kpi-placement-rate'), placeRate, '%', 800);
             
-            // Last eval time (friendly format)
-            const lastDate = new Date(history[history.length - 1].createdAt);
+            // Last eval time (friendly format) — history[0] is newest (sorted -1)
+            const lastDate = new Date(history[0].createdAt);
             const now = new Date();
             const diffHours = Math.round((now - lastDate) / (1000 * 60 * 60));
             document.getElementById('kpi-last-eval').textContent = diffHours === 0 ? 'Just now' : `${diffHours}h ago`;
@@ -400,6 +407,58 @@ async function loadDashboardData() {
         }
     } catch (err) {
         console.error('Failed to load dashboard KPIs:', err);
+    }
+}
+
+/**
+ * Update the Profile Readiness ring in the welcome banner.
+ * Uses the latest evaluation score to fill the SVG ring.
+ */
+function updateProfileReadinessRing(history) {
+    const ring = document.getElementById('welcome-ring');
+    const pctLabel = document.getElementById('welcome-ring-pct');
+    const hintEl = document.querySelector('.welcome-stat-hint');
+    if (!ring || !pctLabel) return;
+
+    if (!history || !Array.isArray(history) || history.length === 0) {
+        ring.setAttribute('stroke-dashoffset', '97.4');
+        pctLabel.textContent = '0%';
+        if (hintEl) hintEl.textContent = 'Complete an evaluation';
+        return;
+    }
+
+    // history is sorted newest-first by backend, so history[0] is latest
+    const latest = history.find(h => h.result);
+    if (!latest || !latest.result) {
+        ring.setAttribute('stroke-dashoffset', '97.4');
+        pctLabel.textContent = '0%';
+        if (hintEl) hintEl.textContent = 'No results yet';
+        return;
+    }
+
+    // Use nullish coalescing to correctly handle score = 0
+    const r = latest.result;
+    const score = (r.placement_score != null) 
+        ? parseFloat(r.placement_score) 
+        : ((r.placement_probability != null) ? parseFloat(r.placement_probability) * 100 : 0);
+    
+    const pct = Math.min(Math.max(score, 0), 100);
+    const circumference = 97.4; // 2 * PI * 15.5
+    const offset = circumference - (pct / 100) * circumference;
+
+    // Animate ring
+    ring.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0, 0, 0.2, 1)';
+    requestAnimationFrame(() => {
+        ring.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    });
+    pctLabel.textContent = Math.round(pct) + '%';
+
+    // Update hint text
+    if (hintEl) {
+        if (pct >= 80) hintEl.textContent = 'Excellent readiness!';
+        else if (pct >= 60) hintEl.textContent = 'Good progress';
+        else if (pct >= 40) hintEl.textContent = 'Keep improving';
+        else hintEl.textContent = 'Needs attention';
     }
 }
 

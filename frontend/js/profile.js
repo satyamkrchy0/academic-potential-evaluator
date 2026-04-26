@@ -10,12 +10,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateProfileUI(user);
     }
     
+    // Load saved profile picture
+    loadProfilePicture();
+
     // Load fresh data
     await loadProfileData();
 
     // Form listeners
     document.getElementById('profile-form').addEventListener('submit', handleProfileUpdate);
     document.getElementById('password-form').addEventListener('submit', handlePasswordUpdate);
+
+    // Avatar upload listeners
+    const avatarTrigger = document.getElementById('avatar-upload-trigger');
+    const avatarInput = document.getElementById('avatar-file-input');
+    if (avatarTrigger && avatarInput) {
+        avatarTrigger.addEventListener('click', () => avatarInput.click());
+        avatarInput.addEventListener('change', handleAvatarUpload);
+    }
 });
 
 function updateProfileUI(user) {
@@ -29,12 +40,16 @@ function updateProfileUI(user) {
     document.getElementById('profile-display-name').textContent = user.name || 'User';
     document.getElementById('profile-display-email').textContent = user.email || '';
     
-    // Avatar initial
+    // Avatar initial (only if no profile picture)
     const initial = (user.name || 'U').charAt(0).toUpperCase();
-    document.getElementById('profile-avatar-large').textContent = initial;
+    const avatarEl = document.getElementById('profile-avatar-large');
+    const savedPic = localStorage.getItem('profilePicture');
+    if (!savedPic && avatarEl) {
+        avatarEl.textContent = initial;
+    }
     
     const sideAvatar = document.getElementById('sidebar-avatar');
-    if (sideAvatar) sideAvatar.textContent = initial;
+    if (sideAvatar && !savedPic) sideAvatar.textContent = initial;
     
     const sideName = document.getElementById('sidebar-user-name');
     if (sideName) sideName.textContent = user.name;
@@ -274,3 +289,76 @@ async function handlePasswordUpdate(e) {
         spinner.classList.add('hidden');
     }, 800);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PROFILE PICTURE UPLOAD
+   ═══════════════════════════════════════════════════════════════ */
+
+function handleAvatarUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+        showToast('Error', 'Please select an image file', 'error');
+        return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('Error', 'Image must be under 5MB', 'error');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        // Resize to 200x200 for efficient storage
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const size = 200;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Center-crop the image
+            const minDim = Math.min(img.width, img.height);
+            const sx = (img.width - minDim) / 2;
+            const sy = (img.height - minDim) / 2;
+            ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            
+            // Save to localStorage
+            localStorage.setItem('profilePicture', dataUrl);
+            
+            // Apply everywhere
+            applyProfilePicture(dataUrl);
+            showToast('Success', 'Profile picture updated!', 'success');
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function loadProfilePicture() {
+    const saved = localStorage.getItem('profilePicture');
+    if (saved) {
+        applyProfilePicture(saved);
+    }
+}
+
+function applyProfilePicture(dataUrl) {
+    // Profile page large avatar
+    const avatarLarge = document.getElementById('profile-avatar-large');
+    if (avatarLarge) {
+        avatarLarge.innerHTML = `<img src="${dataUrl}" alt="Profile">`;
+    }
+
+    // Sidebar avatar
+    const sidebarAvatar = document.getElementById('sidebar-avatar');
+    if (sidebarAvatar) {
+        sidebarAvatar.innerHTML = `<img src="${dataUrl}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+    }
+}
+
