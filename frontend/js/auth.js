@@ -1,9 +1,4 @@
-function showTab(tab) {
-    document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
-    document.getElementById('register-form').classList.toggle('hidden', tab !== 'register');
-    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-}
+// Tab switching is handled by showTab() defined further below.
 
 document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -70,17 +65,68 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function showTab(tabId) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById(`tab-${tabId}`).classList.add('active');
-    document.getElementById('login-form').classList.add('hidden');
-    document.getElementById('login-form').classList.remove('anim-fade-in-up');
-    document.getElementById('register-form').classList.add('hidden');
-    document.getElementById('register-form').classList.remove('anim-fade-in-up');
-    const form = document.getElementById(`${tabId}-form`);
-    form.classList.remove('hidden');
-    void form.offsetWidth;
-    form.classList.add('anim-fade-in-up');
+    // Hide all forms
+    ['login', 'register', 'forgot'].forEach(id => {
+        const form = document.getElementById(`${id}-form`);
+        if (form) {
+            form.classList.add('hidden');
+            form.classList.remove('anim-fade-in-up');
+        }
+        const tab = document.getElementById(`tab-${id}`);
+        if (tab) tab.classList.remove('active');
+    });
+
+    // Show target form with animation
+    const activeForm = document.getElementById(`${tabId}-form`);
+    const activeTab  = document.getElementById(`tab-${tabId}`);
+    if (activeForm) {
+        activeForm.classList.remove('hidden');
+        void activeForm.offsetWidth; // reflow trigger
+        activeForm.classList.add('anim-fade-in-up');
+    }
+    if (activeTab) activeTab.classList.add('active');
+
+    // Reset forgot-password steps when switching back
+    if (tabId !== 'forgot') {
+        const emailStep   = document.getElementById('fp-email-step');
+        const successStep = document.getElementById('fp-success-step');
+        if (emailStep)   emailStep.classList.remove('hidden');
+        if (successStep) successStep.classList.add('hidden');
+    }
 }
+
+// Forgot-password form handler
+document.addEventListener('DOMContentLoaded', () => {
+    const fpForm = document.getElementById('forgot-form');
+    if (fpForm) {
+        fpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email   = document.getElementById('fp-email').value.trim();
+            const btn     = document.getElementById('fp-submit-btn');
+            const spinner = document.getElementById('fp-spinner');
+            const errEl   = document.getElementById('fp-error');
+
+            errEl.classList.add('hidden');
+            errEl.textContent = '';
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+
+            try {
+                await api.post('/auth/forgot-password', { email });
+                // Always show success (server hides whether email exists)
+                document.getElementById('fp-email-step').classList.add('hidden');
+                document.getElementById('fp-success-step').classList.remove('hidden');
+            } catch (err) {
+                errEl.textContent = err.message || 'Something went wrong. Please try again.';
+                errEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        });
+    }
+});
+
 
 function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId);

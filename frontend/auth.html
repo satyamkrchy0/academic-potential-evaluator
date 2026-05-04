@@ -208,6 +208,42 @@
             justify-content: center;
             font-size: 10px;
         }
+
+        /* Forgot password link */
+        .forgot-link {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .forgot-link:hover { color: var(--accent-primary); }
+
+        /* Forgot-password form success state */
+        .fp-success {
+            text-align: center;
+            padding: 12px 0;
+        }
+        .fp-success-icon { font-size: 44px; display: block; margin-bottom: 12px; }
+        .fp-success-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 8px;
+        }
+        .fp-success-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Tab scroll support for 3 tabs */
+        .auth-tabs { flex-wrap: wrap; }
     </style>
 </head>
 <body class="auth-page">
@@ -304,6 +340,7 @@
                     <div class="auth-tabs">
                         <button class="tab active" id="tab-login" onclick="showTab('login')">Sign In</button>
                         <button class="tab" id="tab-register" onclick="showTab('register')">Create Account</button>
+                        <button class="tab" id="tab-forgot" onclick="showTab('forgot')">Forgot Password</button>
                     </div>
 
                     <!-- Login Form -->
@@ -321,6 +358,7 @@
                                 <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
                                 <button type="button" class="password-toggle" onclick="togglePassword('login-password', this)" aria-label="Toggle password visibility">👁️</button>
                             </div>
+                            <button type="button" class="forgot-link" onclick="showTab('forgot')">Forgot password?</button>
                         </div>
                         
                         <button type="submit" class="btn btn-gradient btn-full btn-lg mt-4">
@@ -365,6 +403,41 @@
                         </button>
                         
                         <div id="register-error" class="form-alert hidden"></div>
+                    </form>
+
+                    <!-- Forgot Password Form -->
+                    <form id="forgot-form" class="auth-form hidden">
+                        <h2>Reset password</h2>
+
+                        <!-- Step 1: email entry -->
+                        <div id="fp-email-step">
+                            <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:20px;line-height:1.5;">
+                                Enter the email address linked to your account and we'll send you a secure reset link.
+                            </p>
+                            <div class="field-group">
+                                <label for="fp-email">University Email</label>
+                                <input type="email" id="fp-email" placeholder="student@university.edu" required autocomplete="email">
+                            </div>
+
+                            <button type="submit" class="btn btn-gradient btn-full btn-lg mt-4" id="fp-submit-btn">
+                                <span>Send Reset Link</span>
+                                <div class="spinner spinner--sm hidden" id="fp-spinner"></div>
+                            </button>
+
+                            <div id="fp-error" class="form-alert hidden"></div>
+                        </div>
+
+                        <!-- Step 2: success confirmation -->
+                        <div id="fp-success-step" class="fp-success hidden">
+                            <span class="fp-success-icon">📧</span>
+                            <div class="fp-success-title">Check your inbox!</div>
+                            <p class="fp-success-text">
+                                If an account with that email exists, we've sent a reset link. Check your inbox (and spam folder) — the link expires in 1 hour.
+                            </p>
+                            <button type="button" class="btn btn-gradient btn-full mt-4" onclick="showTab('login')">
+                                Back to Sign In
+                            </button>
+                        </div>
                     </form>
 
                     <div class="panel-footer">
